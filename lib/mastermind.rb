@@ -76,10 +76,24 @@ class Mastermind
     puts "Turn ##{turn_number} of 12".colorize(:yellow)
   end
 
+  def give_feedback(code_guees)
+    color_code = from_code_to_color(code_guees)
+    feedback = []
+    color_code.each_with_index do |color, index|
+      if color_code[index] == @random_code[index]
+        feedback << "🟥"
+      elsif @random_code.include? color
+        feedback << "🔲"
+      end
+    end
+    p feedback.shuffle
+  end
+
   def play
     TURNS.times do |time|
       show_turn(time + 1)
       user_code = try_guess
+      give_feedback(user_code)
       if code_match?(user_code)
         puts "\n#{"Congratulations! You guessed the correct code in #{time + 1} turns".colorize(:green)}"
         break
