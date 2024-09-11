@@ -38,7 +38,6 @@ class Mastermind
     
     \nGood Luck!  
     "
-    p @random_code
   end
 
   def try_guess
