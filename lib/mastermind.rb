@@ -1,12 +1,13 @@
 require 'colorize'
+# require_relative 'code_maker'
 
-class Mastermind
+module Mastermind
   COLORS = ["🟢", "🔴", "🟡", "🔵", "🟣"]
   TURNS = 12
 
-  def initialize
-    @random_code = pick_random_code
+  def initialize(code_maker)
     rules
+    @random_code = code_maker.new().colors
     play
   end
 
@@ -45,7 +46,7 @@ class Mastermind
     verify_code_format
   end
 
-  def verify_code_format
+  def self.verify_code_format
     guess_code = gets.chomp
     regular_expression = /^(?i)(purple|green|red|yellow|blue)(,\s*(purple|green|red|yellow|blue)){3}$/
     until regular_expression.match(guess_code)
@@ -55,7 +56,7 @@ class Mastermind
     guess_code.downcase
   end
 
-  def from_code_to_color(code)
+  def self.from_code_to_color(code)
     color_array = []
     code.split.each do |color|
       color_array << "🟢" if color.include? "green"
@@ -103,4 +104,4 @@ class Mastermind
 end
 
 # Test the Mastermind class
-mm = Mastermind.new
+# mm = Mastermind.new(HumanCodeMaker)
