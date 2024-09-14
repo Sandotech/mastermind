@@ -80,6 +80,7 @@ class HumanCodeMaker < CodeMaker
       ocurrency[0].to_i.times { feedback_array << "🟥" } if ocurrency.include? "X"
       ocurrency[0].to_i.times { feedback_array << "🔲" } if ocurrency.include? "O"
     end
+    print feedback_array.join(" ")
   end
 
   def give_feedback
