@@ -103,5 +103,5 @@ class ComputerCodeMaker < CodeMaker
 end
 
  
-pc = HumanCodeMaker.new
-pc.give_feedback
+# pc = HumanCodeMaker.new
+# pc.give_feedback
