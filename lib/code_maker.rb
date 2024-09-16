@@ -3,7 +3,7 @@ require_relative 'mastermind'
 class CodeMaker
   include Mastermind
   def initialize
-    # @colors = self.pick_colors
+    @colors = self.pick_colors
   end
 
   attr_reader :colors
@@ -90,12 +90,17 @@ class HumanCodeMaker < CodeMaker
   end
 end
 
-
-
 class ComputerCodeMaker < CodeMaker
   def pick_colors
+    Mastermind.pick_random_code
+  end
 
+  def give_feedback(user_code)
+    puts "These are the color to guess #{@colors.join(" ")}"
+    Mastermind.give_feedback(user_code, self.colors)
   end
 end
 
-HumanCodeMaker.new.give_feedback
+ 
+pc = ComputerCodeMaker.new
+pc.give_feedback("green, green, yellow, green")
