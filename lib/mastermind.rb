@@ -100,10 +100,6 @@ module Mastermind
     same_position + coincidences
   end
 
-  def self.count_em(str, substr)
-    str.scan(/(?=#{substr})/).count
-  end
-
   def self.include_coincidences?(code_to_guess, guess)
     # Count coincidences 
     num_of_coincidences = (code_to_guess & guess).length
