@@ -81,8 +81,8 @@ module Mastermind
     return puts "There is no coincidence" unless color_code.any? { |color| code_to_guess.include? color }
     same_position = include_same_positions?(code_to_guess, color_code)
     feedback = same_position
-    feedback
     puts feedback.join(" ")
+    feedback
   end
 
   def self.include_same_positions?(code_to_guess, guess)
