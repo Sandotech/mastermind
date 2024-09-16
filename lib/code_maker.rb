@@ -87,6 +87,7 @@ class HumanCodeMaker < CodeMaker
     print_feedback_guide
     feedback = feedback_validations(gets.chomp)
     print_feedback(feedback)
+    feedback
   end
 end
 
@@ -102,5 +103,5 @@ class ComputerCodeMaker < CodeMaker
 end
 
  
-pc = ComputerCodeMaker.new
-pc.give_feedback("green, green, yellow, green")
+pc = HumanCodeMaker.new
+pc.give_feedback

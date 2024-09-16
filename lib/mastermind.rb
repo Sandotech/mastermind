@@ -3,7 +3,6 @@ require 'colorize'
 
 module Mastermind
   COLORS = ["🟢", "🔴", "🟡", "🔵", "🟣"]
-  TURNS = 12
 
   def initialize(code_maker)
     rules
@@ -41,7 +40,7 @@ module Mastermind
     "
   end
 
-  def try_guess
+  def self.try_guess
     puts 'Try to guess the code make by the Code Maker'
     verify_code_format
   end
@@ -69,8 +68,8 @@ module Mastermind
     color_array
   end
 
-  def code_match?(user_code)
-    from_code_to_color(user_code) == @random_code
+  def code_match?(user_code, code_to_guess = @random_code)
+    from_code_to_color(user_code) == code_to_guess
   end
 
   def show_turn(turn_number)
@@ -82,6 +81,7 @@ module Mastermind
     return puts "There is no coincidence" unless color_code.any? { |color| code_to_guess.include? color }
     same_position = include_same_positions?(code_to_guess, color_code)
     feedback = same_position
+    feedback
     puts feedback.join(" ")
   end
 
