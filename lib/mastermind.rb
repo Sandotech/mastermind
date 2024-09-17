@@ -64,15 +64,14 @@ module Mastermind
       color_array << "🔵" if color.include? "blue"
       color_array << "🟣" if color.include? "purple"
     end
-    puts "These are the color code from user: #{color_array.join(" ")}"
     color_array
   end
 
-  def code_match?(user_code, code_to_guess = @random_code)
+  def self.code_match?(user_code, code_to_guess = @random_code)
     from_code_to_color(user_code) == code_to_guess
   end
 
-  def show_turn(turn_number)
+  def self.show_turn(turn_number)
     puts "Turn ##{turn_number} of 12".colorize(:yellow)
   end
 
