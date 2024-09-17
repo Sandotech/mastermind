@@ -1,16 +1,16 @@
 require 'colorize'
+# require_relative 'code_maker'
 
-class Mastermind
+module Mastermind
   COLORS = ["🟢", "🔴", "🟡", "🔵", "🟣"]
-  TURNS = 12
 
-  def initialize
-    @random_code = pick_random_code
+  def initialize(code_maker)
     rules
+    @random_code = code_maker.new().colors
     play
   end
 
-  def pick_random_code
+  def self.pick_random_code
     clone_array = COLORS.dup
     loop = clone_array.size * 3
     loop.times { |counter| clone_array << clone_array[counter] }
@@ -40,12 +40,12 @@ class Mastermind
     "
   end
 
-  def try_guess
+  def self.try_guess
     puts 'Try to guess the code make by the Code Maker'
     verify_code_format
   end
 
-  def verify_code_format
+  def self.verify_code_format
     guess_code = gets.chomp
     regular_expression = /^(?i)(purple|green|red|yellow|blue)(,\s*(purple|green|red|yellow|blue)){3}$/
     until regular_expression.match(guess_code)
@@ -55,7 +55,7 @@ class Mastermind
     guess_code.downcase
   end
 
-  def from_code_to_color(code)
+  def self.from_code_to_color(code)
     color_array = []
     code.split.each do |color|
       color_array << "🟢" if color.include? "green"
@@ -67,25 +67,42 @@ class Mastermind
     color_array
   end
 
-  def code_match?(user_code)
-    from_code_to_color(user_code) == @random_code
+  def self.code_match?(user_code, code_to_guess = @random_code)
+    from_code_to_color(user_code) == code_to_guess
   end
 
-  def show_turn(turn_number)
+  def self.show_turn(turn_number)
     puts "Turn ##{turn_number} of 12".colorize(:yellow)
   end
 
-  def give_feedback(code_guees)
+  def self.give_feedback(code_guees, code_to_guess = @random_code)
     color_code = from_code_to_color(code_guees)
-    feedback = []
-    color_code.each_with_index do |color, index|
-      if color_code[index] == @random_code[index]
-        feedback << "🟥"
-      elsif @random_code.include? color
-        feedback << "🔲"
+    return puts "There is no coincidence" unless color_code.any? { |color| code_to_guess.include? color }
+    same_position = include_same_positions?(code_to_guess, color_code)
+    feedback = same_position
+    puts "Feedback: #{feedback.join(" ")}"
+    feedback
+  end
+
+  def self.include_same_positions?(code_to_guess, guess)
+    same_position = []
+    positions_to_delete = []
+    guess.each_with_index do |color, index| 
+      if guess[index] == code_to_guess[index] 
+        same_position << "🟥"
+        positions_to_delete << index
       end
     end
-    p feedback.shuffle
+    removed_coincidences = guess.reject.with_index {|v, index| positions_to_delete.include? index }
+    removed_coincidences_from_original_code = code_to_guess.reject.with_index {|v, index| positions_to_delete.include? index }
+    coincidences = include_coincidences?(removed_coincidences_from_original_code, removed_coincidences)
+    same_position + coincidences
+  end
+
+  def self.include_coincidences?(code_to_guess, guess)
+    # Count coincidences 
+    num_of_coincidences = (code_to_guess & guess).length
+    ["🔲"]*num_of_coincidences
   end
 
   def play
@@ -103,4 +120,4 @@ class Mastermind
 end
 
 # Test the Mastermind class
-mm = Mastermind.new
+# mm = Mastermind.new(HumanCodeMaker)
